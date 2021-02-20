@@ -21,4 +21,4 @@ make program
 ```
 
 Note: The template pedal only turns the LED of the terrarium on and off and does no audio processing at all.
-For a example with audio processing generated from this template you can checkout a [reverb](https://github.com/fxwiegand/terrarium-reverb).
+For an example with audio processing generated from this template you can checkout a [reverb](https://github.com/fxwiegand/terrarium-reverb).
