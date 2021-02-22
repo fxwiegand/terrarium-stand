@@ -38,4 +38,4 @@ jobs:
       with:
         name: Binary for terrarium
         # A file, directory or wildcard pattern that describes what to upload
-        path: $PEDAL_NAME/build/$PEDAL_NAME.bin
+        path: ${{ env.PEDAL_NAME }}/build/${{ env.PEDAL_NAME }}.bin
