@@ -5,10 +5,8 @@ To create a new pedal, simply create a new git repository using this template an
 ## Getting started
 Build the daisy libraries with:
 ```
-cd DaisySP
-make
-cd ../libDaisy
-make
+make -C DaisySP
+make -C libDaisy
 ```
 
 Then flash your terrarium with:
