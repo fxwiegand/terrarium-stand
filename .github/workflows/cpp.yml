@@ -16,6 +16,7 @@ jobs:
     - name: build DaisySP
       run: |
         cd DaisySP
+        ls -al
         make
     - name: build libDaisy
       run: |
