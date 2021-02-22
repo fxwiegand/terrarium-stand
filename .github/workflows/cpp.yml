@@ -15,7 +15,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: 'recursive'
+        
+    - name: Install arm-none-eabi-gcc toolchain
+      uses: fiam/arm-none-eabi-gcc@v1
+      with:
+        release: '9-2019-q4'
     
     - name: Build Daisy libraries
       run: |
