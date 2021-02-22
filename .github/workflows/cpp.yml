@@ -32,3 +32,10 @@ jobs:
     - name: Build binary for pedal
       run: |
         make -C $PEDAL_NAME
+        
+    - name: Upload binary for terrarium
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        name: Binary for terrarium
+        # A file, directory or wildcard pattern that describes what to upload
+        path: $PEDAL_NAME/build/$PEDAL_NAME.bin
