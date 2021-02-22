@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      PEDAL_NAME: your_pedal
 
     steps:
     - name: Checkout repository
@@ -26,3 +28,7 @@ jobs:
       run: |
         make -C libDaisy
         make -C DaisySP
+        
+    - name: Build binary for pedal
+      run: |
+        make -C $PEDAL_NAME
