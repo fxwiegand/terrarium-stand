@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout repository
     - uses: actions/checkout@v2
-    - name: make
-      run: make -C libDaisy
+      with:
+        submodules: true
+    
+    - name: Build Daisy libraries
+      run: |
+        make -C libDaisy
+        make -C DaisySP
