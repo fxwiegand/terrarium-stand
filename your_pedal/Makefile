@@ -5,7 +5,7 @@ TARGET = your_pedal
 CPP_SOURCES = your_pedal.cpp
 
 # Library Locations
-LIBDAISY_DIR = ../libdaisy
+LIBDAISY_DIR = ../libDaisy
 DAISYSP_DIR = ../DaisySP
 
 # Core location, and generic Makefile.
