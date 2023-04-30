@@ -57,7 +57,7 @@ void callback(
         else
         {
             // processed signal
-            // Using knob1 as dry/wet here
+            // Using knob1 as volume here
             out[i] = in[i] * knob1.Value();
         }
     }
