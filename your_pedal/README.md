@@ -13,6 +13,6 @@ A description for your pedal for the [terrarium](https://www.pedalpcb.com/produc
 | Control | Parameter | Comment |
 | --- | --- | --- |
 | Knob 1 | Volume | Overall Volume of the pedal |
-| Knob 2 | Reverb | A knob controlling for example some reverb |
-| Knob 3 | Mix | Another knob that controls the mix |
+| Knob 2 | Function | Function for knob 2 |
+| Knob 3 | Function | Function for knob 3 |
 | Switch 1 | Bypass | Puts the pedal in bypass mode |

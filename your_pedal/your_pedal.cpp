@@ -6,72 +6,88 @@ using namespace daisy;
 using namespace daisysp;
 using namespace terrarium;
 
-// Declare a local daisy_petal for hardware access
-DaisyPetal hw;
+// Declare a global daisy_petal for hardware access
+DaisyPetal  hw;
 
-bool      bypass;
+bool        bypass, switch1;
+Led         led1, led2;
+Parameter   knob1;
+// ReverbSc    verb;
 
-Led led1, led2;
+/*
+ * Process terrarium knobs and switches
+ */
+void processTerrariumControls() {
+  // update switch values
+  // https://electro-smith.github.io/libDaisy/classdaisy_1_1_switch.html
+  if(hw.switches[Terrarium::FOOTSWITCH_1].RisingEdge()) {
+    bypass = !bypass;
+  }
 
-// This runs at a fixed rate, to prepare audio samples
-void callback(float *in, float *out, size_t size)
+  switch1 = hw.switches[Terrarium::SWITCH_1].Pressed();
+
+  // update knob values
+  // https://electro-smith.github.io/libDaisy/classdaisy_1_1_analog_control.html
+  knob1.Process();
+
+  led1.Set(bypass ? 0.0f : 1.0f);
+}
+
+/*
+ * This runs at a fixed rate, to prepare audio samples
+ */
+void callback(
+    AudioHandle::InterleavingInputBuffer  in,
+    AudioHandle::InterleavingOutputBuffer out,
+    size_t                                size
+    )
 {
     hw.ProcessAllControls();
+    processTerrariumControls();
     led1.Update();
     led2.Update();
 
-    // (De-)Activate bypass and toggle LED when left footswitch is pressed
-    if(hw.switches[Terrarium::FOOTSWITCH_1].RisingEdge())
-    {
-        bypass = !bypass;
-        led1.Set(bypass ? 0.0f : 1.0f);
-    }
-
     for(size_t i = 0; i < size; i += 2)
     {
-        float dryl, dryr;
-        dryl  = in[i];
-        dryr  = in[i + 1];
-
         // Process your signal here
-
         if(bypass)
         {
-            out[i]     = in[i];     // left
-            out[i + 1] = in[i + 1]; // right
+            out[i] = in[i];
         }
         else
         {
-            out[i]     = in[i]; // Replace in[i] with your left processed signal
-            out[i + 1] = in[i + 1]; // Replace in[i + 1] with your right processed signal
+            // processed signal
+            // Using knob1 as dry/wet here
+            out[i] = in[i] * knob1.Value();
         }
     }
 }
 
 int main(void)
 {
-    float samplerate;
+    // float samplerate;
 
     hw.Init();
-    samplerate = hw.AudioSampleRate();
+    // samplerate = hw.AudioSampleRate();
+
+    led1.Init(hw.seed.GetPin(Terrarium::LED_1), false);
+    led2.Init(hw.seed.GetPin(Terrarium::LED_2), false);
 
     // Initialize your knobs here like so:
-    // parameter.Init(hw.knob[Terrarium::KNOB_1], 0.6f, 0.999f, Parameter::LOGARITHMIC);
+    // https://electro-smith.github.io/libDaisy/classdaisy_1_1_parameter.html
+    knob1.Init(hw.knob[Terrarium::KNOB_1], 0.0f, 0.999f, Parameter::LINEAR);
 
     // Set samplerate for your processing like so:
     // verb.Init(samplerate);
 
-
-    // Init the LEDs and set activate bypass
-    led1.Init(hw.seed.GetPin(Terrarium::LED_1),false);
-    led1.Update();
     bypass = true;
 
     hw.StartAdc();
     hw.StartAudio(callback);
+
     while(1)
     {
-        // Do Stuff Infinitely Here
+        // Do lower priority stuff infinitely here
         System::Delay(10);
     }
 }
